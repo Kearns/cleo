@@ -6,6 +6,5 @@ export const SampleComponent = () => {
 };
 
 export const SampleComponentTwo = () => {
-  const [number, setNumber] = React.useState(Math.random())
-  return <div>SAMPLE 2: {number}</div>
+  return <div>SAMPLE 2</div>
 };

@@ -1,7 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom';
 import { WebComponentContainer } from '../WebComponentContainer';
-
 
 class ReactLoader {
   constructor(name, Component, template = document.createElement('div')) {
@@ -11,7 +10,7 @@ class ReactLoader {
     class ReactComponent extends WebComponentContainer {
       connectedCallback() {
         this.attachShadow({ mode: 'open' }).appendChild(template);
-        ReactDOM.render(<Component />, template);
+        ReactDOM.render(Component, template);
       }
     }
     customElements.define(TagName, ReactComponent);

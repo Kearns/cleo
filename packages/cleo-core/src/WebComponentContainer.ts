@@ -1,3 +1,5 @@
+import React from 'react';
+
 export class WebComponentContainer extends HTMLElement {
 
   constructor(){
