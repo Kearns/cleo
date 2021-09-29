@@ -1,16 +1,16 @@
-import React from 'react';
-import * as ReactDOM from 'react-dom';
 import { WebComponentContainer } from '../WebComponentContainer';
 
+const DefaultTemplate = document.createElement('div');
+DefaultTemplate.innerHTML = `<slot name="children"></slot>`;
+
 class ReactLoader {
-  constructor(name, Component, template = document.createElement('div')) {
+  constructor({name, component, template = DefaultTemplate, React, ReactDOM}) {
     const TagName = name;
-    template.classList.add(name + '-container');
 
     class ReactComponent extends WebComponentContainer {
       connectedCallback() {
         this.attachShadow({ mode: 'open' }).appendChild(template);
-        ReactDOM.render(Component, template);
+        ReactDOM.render(component, template);
       }
     }
     customElements.define(TagName, ReactComponent);

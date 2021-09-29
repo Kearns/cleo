@@ -1,8 +1,3 @@
-// src/loaders/ReactLoader.tsx
-import {
-  render
-} from "react-dom";
-
 // src/WebComponentContainer.ts
 var WebComponentContainer = class extends HTMLElement {
   constructor() {
@@ -12,14 +7,15 @@ var WebComponentContainer = class extends HTMLElement {
 };
 
 // src/loaders/ReactLoader.tsx
+var DefaultTemplate = document.createElement("div");
+DefaultTemplate.innerHTML = `<slot name="children"></slot>`;
 var ReactLoader = class {
-  constructor(name, Component, template = document.createElement("div")) {
+  constructor({ name, component, template = DefaultTemplate, React, ReactDOM }) {
     const TagName = name;
-    template.classList.add(name + "-container");
     class ReactComponent extends WebComponentContainer {
       connectedCallback() {
         this.attachShadow({ mode: "open" }).appendChild(template);
-        render(Component, template);
+        ReactDOM.render(component, template);
       }
     }
     customElements.define(TagName, ReactComponent);

@@ -1,21 +1,24 @@
 
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { ReactWebComponent, Router } from 'cleo-core';
 
 import { SampleComponent, SampleComponentTwo } from './samples/index';
 const domElementContainer = document.getElementById('cleo-container');
 
-console.log("ROUTER", ReactWebComponent)
+new ReactWebComponent({
+  name: 'x-demo-react-app-one',
+  component: <SampleComponent />,
+  React,
+  ReactDOM
+});
 
-new ReactWebComponent(
-  'x-demo-react-app-one',
-  <SampleComponent />
-);
-
-new ReactWebComponent(
-  'x-demo-react-app-two',
-  <SampleComponentTwo />
-);
+new ReactWebComponent({
+  name: 'x-demo-react-app-two',
+  component: <SampleComponentTwo />,
+  React,
+  ReactDOM
+});
 
 
 const router = new Router({

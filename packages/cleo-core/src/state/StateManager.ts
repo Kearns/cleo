@@ -23,6 +23,7 @@ export default class StateManager implements IStateManager {
   public setState(path, value) { 
     return setStateByPath(this.state, path, value);
   };
+
 }
 
 
