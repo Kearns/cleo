@@ -1,6 +1,5 @@
 import store from './store';
-import getStateByPath from './utilities/getStateByPath';
-import setStateByPath from './utilities/setStateByPath';
+import * as stateUtils from './utilities/stateUtils';
 
 //"path" is in dot notation - ie. configuration.path.to.some.key
 
@@ -17,11 +16,11 @@ export default class StateManager implements IStateManager {
   }
   
   public getState(path) { 
-    return getStateByPath(this.state, path);
+    return stateUtils.getStateByPath(this.state, path);
   };
 
   public setState(path, value) { 
-    return setStateByPath(this.state, path, value);
+    return stateUtils.setStateByPath(this.state, path, value);
   };
 
 }

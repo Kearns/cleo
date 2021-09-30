@@ -1,4 +1,4 @@
-import {Router} from '../router/index';
+import { Events } from '../';
 
 class NavLink extends HTMLAnchorElement {
 
@@ -6,14 +6,13 @@ class NavLink extends HTMLAnchorElement {
     this.onclick = (e) => {
       e.stopImmediatePropagation();
       e.preventDefault();
-      
-      const href = this.getAttribute('href');
-      Router.navigate(href);
+
+      Events.publish('router:navigate:start', this.getAttribute('href'));
     }
   }
-  
+
 }
 
-export default customElements.define('nav-link', NavLink, { 
-  extends: "a" 
+export default customElements.define('nav-link', NavLink, {
+  extends: "a"
 });
