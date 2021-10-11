@@ -4,7 +4,13 @@ const DefaultTemplate = document.createElement('div');
 DefaultTemplate.innerHTML = `<slot name="children"></slot>`;
 
 class ReactLoader {
-  constructor({name, component, template = DefaultTemplate, React, ReactDOM}) {
+  constructor({
+    name, 
+    component, 
+    template = DefaultTemplate, 
+    React, 
+    ReactDOM
+  }) {
     const TagName = name;
 
     class ReactComponent extends WebComponentContainer {

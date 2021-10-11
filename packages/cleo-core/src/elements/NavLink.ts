@@ -10,7 +10,6 @@ class NavLink extends HTMLAnchorElement {
       Events.publish('router:navigate:start', this.getAttribute('href'));
     }
   }
-
 }
 
 export default customElements.define('nav-link', NavLink, {

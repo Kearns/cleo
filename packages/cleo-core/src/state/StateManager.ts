@@ -11,9 +11,7 @@ interface IStateManager {
 export default class StateManager implements IStateManager {
   private state: {};
 
-  constructor() {
-    this.state = store
-  }
+  constructor() { this.state = store; }
   
   public getState(path) { 
     return stateUtils.getStateByPath(this.state, path);
@@ -22,7 +20,4 @@ export default class StateManager implements IStateManager {
   public setState(path, value) { 
     return stateUtils.setStateByPath(this.state, path, value);
   };
-
 }
-
-

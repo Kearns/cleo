@@ -7,7 +7,7 @@ interface IEventManager {
 
 export default class EventManager implements IEventManager {
 
-  private subscribers = {}
+  private subscribers = { }
 
   constructor() { }
 

@@ -2,6 +2,7 @@ import StateManager from "./StateManager";
 
 describe('State Manager', () => {
   test('Core Functionality', () => {
+  
     let test;
 
     const stateManager = new StateManager();
@@ -13,6 +14,5 @@ describe('State Manager', () => {
     stateManager.setState('test', true)
     test = stateManager.getState('test')
     expect(test).toBe(true);
-  
   })
 });

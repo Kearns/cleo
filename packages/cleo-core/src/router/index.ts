@@ -10,18 +10,14 @@ export class Router {
     this.routes = routes;
 
     this.setRoute = () => {
-
-      const routeArray = Object.entries(routes)
-
+      const routeArray = Object.entries(routes);
       const route: [...any] = routeArray.find(([key, route]: [string, any]) => {
-
         if (typeof route == 'string') {
           if (key == window.location.pathname) {
             State.setState('global.active', { route: key, app: route, pathname: window.location.pathname });
             return true;
           }
         };
-
         if (route.includeSubroutes) {
           if (window.location.pathname.startsWith(key)) {
             State.setState('global.active', { route: key, app: route, pathname: window.location.pathname })
@@ -29,9 +25,7 @@ export class Router {
           }
         }
       });
-
       container.innerHTML = route[1].component ? route[1].component : route[1];
-
     }
 
     this.navigate = (pathname) => {
