@@ -5,7 +5,7 @@ interface IEventManager {
   subscribe: (event, subscriber) => any;
 }
 
-export default class EventManager implements IEventManager {
+class EventManager implements IEventManager {
 
   private subscribers = { }
 
@@ -19,3 +19,7 @@ export default class EventManager implements IEventManager {
     eventUtils.onSubscribe(this.subscribers, event, subscriber)
   }
 }
+
+const Events = new EventManager();
+
+export default Events;

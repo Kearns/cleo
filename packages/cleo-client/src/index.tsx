@@ -6,19 +6,20 @@ import { ReactWebComponent, Router, Events, State } from 'cleo-core';
 import { SampleComponent, SampleComponentTwo } from './samples/index';
 const domElementContainer = document.getElementById('cleo-container');
 
-(window as any).Events = Events;
-(window as any).State = State;
+(window as any).xEvents = Events;
+(window as any).xState = State;
+
 
 new ReactWebComponent({
   name: 'x-demo-react-app-one',
-  component: <SampleComponent />,
+  component: SampleComponent,
   React,
   ReactDOM
 });
 
 new ReactWebComponent({
   name: 'x-demo-react-app-two',
-  component: <SampleComponentTwo />,
+  component: SampleComponentTwo,
   React,
   ReactDOM
 });

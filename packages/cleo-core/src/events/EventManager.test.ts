@@ -1,8 +1,7 @@
-import EventManager from "./EventManager";
+import eventManager from "./EventManager";
 
 describe('Event Manager', () => {
   test('Core Functionality', () => {
-    const eventManager = new EventManager()
     let test = false;
     expect(test).toBe(false);
     eventManager.subscribe('example', (data) => test = data)

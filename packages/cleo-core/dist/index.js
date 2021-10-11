@@ -137,54 +137,6 @@ var require_dot_prop = __commonJS({
   }
 });
 
-// src/WebComponentContainer.ts
-var WebComponentContainer = class extends HTMLElement {
-  constructor() {
-    super();
-    console.log("DEBUG:Mounted");
-  }
-};
-
-// src/loaders/ReactLoader.tsx
-var DefaultTemplate = document.createElement("div");
-DefaultTemplate.innerHTML = `<slot name="children"></slot>`;
-var ReactLoader = class {
-  constructor({ name, component, template = DefaultTemplate, React, ReactDOM }) {
-    const TagName = name;
-    class ReactComponent extends WebComponentContainer {
-      connectedCallback() {
-        this.attachShadow({ mode: "open" }).appendChild(template);
-        ReactDOM.render(component, template);
-      }
-    }
-    customElements.define(TagName, ReactComponent);
-  }
-};
-var ReactLoader_default = ReactLoader;
-
-// src/events/utilities/eventUtils.ts
-function onPublish(subscribers, event, data) {
-  if (!subscribers[event])
-    return;
-  subscribers[event].forEach((subscriber) => subscriber(data));
-}
-function onSubscribe(subscribers, event, subscriber) {
-  return subscribers[event] ? subscribers[event].push(subscriber) : subscribers[event] = [subscriber];
-}
-
-// src/events/EventManager.ts
-var EventManager = class {
-  constructor() {
-    this.subscribers = {};
-  }
-  publish(event, data) {
-    onPublish(this.subscribers, event, data);
-  }
-  subscribe(event, subscriber) {
-    onSubscribe(this.subscribers, event, subscriber);
-  }
-};
-
 // src/state/store.ts
 var store_default = {
   "configuration": {},
@@ -212,6 +164,64 @@ var StateManager = class {
     return setStateByPath(this.state, path, value);
   }
 };
+var stateManager = new StateManager();
+var StateManager_default = stateManager;
+
+// src/events/utilities/eventUtils.ts
+function onPublish(subscribers, event, data) {
+  if (!subscribers[event])
+    return;
+  subscribers[event].forEach((subscriber) => subscriber(data));
+}
+function onSubscribe(subscribers, event, subscriber) {
+  return subscribers[event] ? subscribers[event].push(subscriber) : subscribers[event] = [subscriber];
+}
+
+// src/events/EventManager.ts
+var EventManager = class {
+  constructor() {
+    this.subscribers = {};
+  }
+  publish(event, data) {
+    onPublish(this.subscribers, event, data);
+  }
+  subscribe(event, subscriber) {
+    onSubscribe(this.subscribers, event, subscriber);
+  }
+};
+var Events = new EventManager();
+var EventManager_default = Events;
+
+// src/WebComponentContainer.ts
+var WebComponentContainer = class extends HTMLElement {
+  constructor() {
+    super();
+    console.log("DEBUG:Mounted");
+  }
+};
+
+// src/loaders/ReactLoader.tsx
+var DefaultTemplate = document.createElement("div");
+DefaultTemplate.innerHTML = `<slot name="children"></slot>`;
+var ReactLoader = class {
+  constructor({
+    name,
+    component,
+    template = DefaultTemplate,
+    React,
+    ReactDOM
+  }) {
+    const TagName = name;
+    class ReactComponent extends WebComponentContainer {
+      connectedCallback() {
+        this.attachShadow({ mode: "open" }).appendChild(template);
+        ReactDOM.render(React.createElement(component, { State: StateManager_default, Events: EventManager_default }, null), template);
+      }
+    }
+    customElements.define(TagName, ReactComponent);
+  }
+};
+var ReactLoader_default = ReactLoader;
 
 // src/router/index.ts
 var Router = class {
@@ -222,14 +232,14 @@ var Router = class {
       const route = routeArray.find(([key, route2]) => {
         if (typeof route2 == "string") {
           if (key == window.location.pathname) {
-            State.setState("global.active", { route: key, app: route2, pathname: window.location.pathname });
+            StateManager_default.setState("global.active", { route: key, app: route2, pathname: window.location.pathname });
             return true;
           }
         }
         ;
         if (route2.includeSubroutes) {
           if (window.location.pathname.startsWith(key)) {
-            State.setState("global.active", { route: key, app: route2, pathname: window.location.pathname });
+            StateManager_default.setState("global.active", { route: key, app: route2, pathname: window.location.pathname });
             return true;
           }
         }
@@ -239,9 +249,9 @@ var Router = class {
     this.navigate = (pathname) => {
       window.history.pushState({}, pathname, window.location.origin + pathname);
       this.setRoute(pathname);
-      Events.publish("router:navigate:end", pathname);
+      EventManager_default.publish("router:navigate:end", pathname);
     };
-    Events.subscribe("router:navigate:start", this.navigate);
+    EventManager_default.subscribe("router:navigate:start", this.navigate);
     window.onpopstate = () => this.setRoute(window.location.pathname);
     window.onload = () => this.setRoute(window.location.pathname);
   }
@@ -253,21 +263,17 @@ var NavLink = class extends HTMLAnchorElement {
     this.onclick = (e) => {
       e.stopImmediatePropagation();
       e.preventDefault();
-      Events.publish("router:navigate:start", this.getAttribute("href"));
+      EventManager_default.publish("router:navigate:start", this.getAttribute("href"));
     };
   }
 };
 var NavLink_default = customElements.define("nav-link", NavLink, {
   extends: "a"
 });
-
-// src/index.ts
-var Events = new EventManager();
-var State = new StateManager();
 export {
-  Events,
+  EventManager_default as Events,
   NavLink_default as NavLink,
   ReactLoader_default as ReactWebComponent,
   Router,
-  State
+  StateManager_default as State
 };
