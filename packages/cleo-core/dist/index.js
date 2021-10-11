@@ -201,27 +201,46 @@ var WebComponentContainer = class extends HTMLElement {
 };
 
 // src/loaders/ReactLoader.tsx
-var DefaultTemplate = document.createElement("div");
-DefaultTemplate.innerHTML = `<slot name="children"></slot>`;
 var ReactLoader = class {
   constructor({
     name,
     component,
-    template = DefaultTemplate,
+    template = null,
     React,
-    ReactDOM
+    ReactDOM,
+    type = "component"
   }) {
     const TagName = name;
     class ReactComponent extends WebComponentContainer {
       connectedCallback() {
-        this.attachShadow({ mode: "open" }).appendChild(template);
-        ReactDOM.render(React.createElement(component, { State: StateManager_default, Events: EventManager_default }, null), template);
+        let root;
+        if (!template) {
+          switch (type) {
+            case "app":
+              root = document.getElementById("cleo-app-container");
+              break;
+            case "component":
+              root = document.createElement("div");
+              root.innerHTML = `<slot name="children"></slot>`;
+              break;
+          }
+        } else
+          root = template;
+        this.attachShadow({ mode: "open" }).appendChild(root);
+        ReactDOM.render(React.createElement(component, { State: StateManager_default, Events: EventManager_default }, null), root);
       }
     }
     customElements.define(TagName, ReactComponent);
   }
 };
 var ReactLoader_default = ReactLoader;
+
+// src/elements/CleoContainer.ts
+var CleoContainer_default = customElements.define("cleo-container", class extends HTMLElement {
+  connectedCallback() {
+    this.innerHTML = '<div id="cleo-container"><div id="cleo-app-container"></div></div>';
+  }
+});
 
 // src/router/index.ts
 var Router = class {
@@ -271,6 +290,7 @@ var NavLink_default = customElements.define("nav-link", NavLink, {
   extends: "a"
 });
 export {
+  CleoContainer_default as CleoContainer,
   EventManager_default as Events,
   NavLink_default as NavLink,
   ReactLoader_default as ReactWebComponent,

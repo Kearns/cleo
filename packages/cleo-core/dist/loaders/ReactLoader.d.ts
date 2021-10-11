@@ -1,10 +1,11 @@
 declare class ReactLoader {
-    constructor({ name, component, template, React, ReactDOM }: {
+    constructor({ name, component, template, React, ReactDOM, type }: {
         name: any;
         component: any;
-        template?: HTMLDivElement;
+        template?: any;
         React: any;
         ReactDOM: any;
+        type?: string;
     });
 }
 export default ReactLoader;
