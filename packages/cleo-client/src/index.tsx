@@ -19,7 +19,7 @@ new ReactWebComponent({
 });
 
 new ReactWebComponent({
-  name: 'x-demo-react-app-one',
+  name: 'demo-react-app-one',
   component: SampleComponent,
   React,
   ReactDOM,
@@ -28,7 +28,7 @@ new ReactWebComponent({
 });
 
 new ReactWebComponent({
-  name: 'x-demo-react-app-two',
+  name: 'demo-react-app-two',
   component: SampleComponentTwo,
   React,
   ReactDOM,
@@ -42,8 +42,8 @@ Events.subscribe('router:navigate:end', (href: string) => console.log(
 ));
 
 const router = new Router({
-  '/1': { includeSubroutes: true, component: '<x-demo-react-app-one>' },
-  '/2': '<x-demo-react-app-two>'
+  '/1': { includeSubroutes: true, component: '<demo-react-app-one>' },
+  '/2': '<demo-react-app-two>'
 }, domElementContainer);
 
 (window as any).router = router;
